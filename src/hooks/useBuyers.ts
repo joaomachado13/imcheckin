@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { Buyer, Redemption } from '@/types/database';
+export type { Buyer, Redemption };
 import { toast } from 'sonner';
 import { normalizeImportedBuyer, normalizePhone } from '@/lib/buyers/importNormalization';
 import { sanitizeSearchTerm } from '@/lib/security/sanitize';

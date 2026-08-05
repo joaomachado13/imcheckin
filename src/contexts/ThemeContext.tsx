@@ -1,28 +1,40 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-export type ThemeMode = 'orange-liquid' | 'dark';
+export type ThemeMode = 'orange-liquid' | 'soft-light' | 'dark';
 
 interface ThemeContextType {
   theme: ThemeMode;
   setTheme: (theme: ThemeMode) => void;
+  hasSeenNotice: boolean;
+  dismissNotice: () => void;
+  showNoticeAgain: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = 'imcheckin_theme_mode';
+const NOTICE_STORAGE_KEY = 'imcheckin_theme_notice_seen';
+
+const VALID_THEMES: ThemeMode[] = ['orange-liquid', 'soft-light', 'dark'];
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
     const saved = localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode | null;
-    return saved === 'dark' ? 'dark' : 'orange-liquid';
+    return saved && VALID_THEMES.includes(saved) ? saved : 'orange-liquid';
   });
+
+  const [hasSeenNotice, setHasSeenNotice] = useState<boolean>(
+    () => localStorage.getItem(NOTICE_STORAGE_KEY) === 'true'
+  );
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.remove('theme-orange-liquid', 'dark');
+    root.classList.remove('theme-orange-liquid', 'theme-soft-light', 'dark');
 
     if (theme === 'dark') {
       root.classList.add('dark');
+    } else if (theme === 'soft-light') {
+      root.classList.add('theme-soft-light');
     } else {
       root.classList.add('theme-orange-liquid');
     }
@@ -34,8 +46,18 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setThemeState(newTheme);
   };
 
+  const dismissNotice = () => {
+    localStorage.setItem(NOTICE_STORAGE_KEY, 'true');
+    setHasSeenNotice(true);
+  };
+
+  const showNoticeAgain = () => {
+    localStorage.removeItem(NOTICE_STORAGE_KEY);
+    setHasSeenNotice(false);
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, hasSeenNotice, dismissNotice, showNoticeAgain }}>
       {children}
     </ThemeContext.Provider>
   );
