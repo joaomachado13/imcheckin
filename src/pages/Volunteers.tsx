@@ -103,9 +103,9 @@ export default function Volunteers() {
     return list;
   }, [volunteers, searchTerm, statusFilter, redemptionMap]);
 
-  // Pagination
+  // Pagination (20 por página para leveza e responsividade no mobile)
   const [currentPage, setCurrentPage] = useState(1);
-  const perPage = 50;
+  const perPage = 20;
   const paginated = useMemo(() => filtered.slice((currentPage - 1) * perPage, currentPage * perPage), [filtered, currentPage]);
   const totalPages = Math.ceil(filtered.length / perPage);
   useMemo(() => setCurrentPage(1), [searchTerm, statusFilter]);
@@ -230,22 +230,23 @@ export default function Volunteers() {
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="font-display text-display-sm gradient-text">Voluntários</h1>
-          <p className="text-muted-foreground mt-1">Lista oficial de voluntários da igreja</p>
+          <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">Voluntários</h1>
+          <p className="text-sm text-stone-600 font-semibold mt-0.5">Lista oficial de voluntários da igreja</p>
         </div>
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex flex-wrap gap-2">
           {isAdmin && (
             <>
               <AlertDialog open={isWipeOpen} onOpenChange={(o) => { setIsWipeOpen(o); if (!o) setWipeConfirm(''); }}>
                 <Button
                   variant="destructive"
-                  className="gap-2"
+                  size="sm"
+                  className="gap-1.5 h-10 px-3.5 rounded-xl font-bold text-xs shadow-sm bg-rose-600 hover:bg-rose-700 text-white"
                   onClick={() => setIsWipeOpen(true)}
                   disabled={!volunteers?.length}
                 >
-                  <AlertTriangle className="h-4 w-4" />
+                  <AlertTriangle className="h-3.5 w-3.5" />
                   Zerar lista
                 </Button>
                 <AlertDialogContent>
@@ -279,7 +280,10 @@ export default function Volunteers() {
 
               <Dialog open={isImportOpen} onOpenChange={setIsImportOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="gap-2"><Upload className="h-4 w-4" />Importar manual</Button>
+                  <Button variant="outline" size="sm" className="gap-1.5 h-10 px-3.5 rounded-xl font-bold text-xs bg-white/80 border-stone-300 text-stone-800 hover:bg-white">
+                    <Upload className="h-3.5 w-3.5 text-orange-600" />
+                    Importar manual
+                  </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl">
                   <DialogHeader>
@@ -304,6 +308,7 @@ export default function Volunteers() {
                     <Button
                       onClick={handleImport}
                       disabled={importVolunteers.isPending || !csvAnalysis || csvAnalysis.unique.length === 0}
+                      className="bg-orange-600 hover:bg-orange-700 text-white font-bold"
                     >
                       {importVolunteers.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       {csvAnalysis ? `Importar ${csvAnalysis.unique.length}` : 'Importar'}
@@ -314,7 +319,10 @@ export default function Volunteers() {
 
               <Dialog open={isConfOpen} onOpenChange={setIsConfOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="gap-2"><Settings className="h-4 w-4" />Conferências</Button>
+                  <Button variant="outline" size="sm" className="gap-1.5 h-10 px-3.5 rounded-xl font-bold text-xs bg-white/80 border-stone-300 text-stone-800 hover:bg-white">
+                    <Settings className="h-3.5 w-3.5 text-orange-600" />
+                    Conferências
+                  </Button>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
@@ -323,7 +331,7 @@ export default function Volunteers() {
                   </DialogHeader>
                   <div className="space-y-3 max-h-[400px] overflow-y-auto">
                     {conferences?.map((c) => (
-                      <div key={c.id} className="flex items-center gap-2 p-2 rounded-lg border border-border/50">
+                      <div key={c.id} className="flex items-center gap-2 p-2 rounded-lg border border-stone-200">
                         <span className={`flex-1 text-sm font-medium ${!c.active ? 'line-through text-muted-foreground' : ''}`}>{c.name}</span>
                         <Button size="sm" variant={c.active ? 'secondary' : 'outline'} onClick={() => updateConference.mutate({ id: c.id, active: !c.active })}>
                           {c.active ? 'Desativar' : 'Ativar'}
@@ -336,7 +344,7 @@ export default function Volunteers() {
                   </div>
                   <div className="flex gap-2 mt-2">
                     <Input value={newConfName} onChange={(e) => setNewConfName(e.target.value)} placeholder="Nova conferência..." className="flex-1" />
-                    <Button onClick={handleAddConference} disabled={!newConfName.trim() || createConference.isPending}>
+                    <Button onClick={handleAddConference} disabled={!newConfName.trim() || createConference.isPending} className="bg-orange-600 hover:bg-orange-700 text-white font-bold">
                       <Plus className="h-4 w-4 mr-1" />Adicionar
                     </Button>
                   </div>
@@ -345,8 +353,9 @@ export default function Volunteers() {
 
               <Dialog open={isExportOpen} onOpenChange={(o) => { setIsExportOpen(o); if (!o) setExportConfId(''); }}>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="gap-2" disabled={!volunteers?.length}>
-                    <Ticket className="h-4 w-4" />Exportar
+                  <Button variant="outline" size="sm" className="gap-1.5 h-10 px-3.5 rounded-xl font-bold text-xs bg-white/80 border-stone-300 text-stone-800 hover:bg-white" disabled={!volunteers?.length}>
+                    <Ticket className="h-3.5 w-3.5 text-orange-600" />
+                    Exportar
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -378,84 +387,196 @@ export default function Volunteers() {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        <div className="stat-card">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-primary/10"><Users className="h-6 w-6 text-primary" /></div>
+      {/* Stats - Grid responsivo 1 col no mobile, 3 cols no desktop */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+        <div className="bg-white/60 backdrop-blur-md border border-stone-200 dark:border-white/10 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-orange-100 text-orange-700">
+              <Users className="h-5 w-5 sm:h-6 sm:w-6" />
+            </div>
             <div>
-              <p className="text-3xl font-display font-extrabold">{stats.total}</p>
-              <p className="text-sm text-muted-foreground font-medium">Voluntários</p>
+              <p className="text-2xl sm:text-3xl font-display font-extrabold text-stone-900">{stats.total}</p>
+              <p className="text-xs sm:text-sm text-stone-600 font-semibold">Voluntários</p>
             </div>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-success/10"><CheckCircle2 className="h-6 w-6 text-success" /></div>
+
+        <div className="bg-white/60 backdrop-blur-md border border-stone-200 dark:border-white/10 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-emerald-100 text-emerald-700">
+              <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6" />
+            </div>
             <div>
-              <p className="text-3xl font-display font-extrabold">{stats.resgatados}</p>
-              <p className="text-sm text-muted-foreground font-medium">Resgatados</p>
+              <p className="text-2xl sm:text-3xl font-display font-extrabold text-stone-900">{stats.resgatados}</p>
+              <p className="text-xs sm:text-sm text-stone-600 font-semibold">Resgatados</p>
             </div>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-pending/10"><Clock className="h-6 w-6 text-pending" /></div>
+
+        <div className="bg-white/60 backdrop-blur-md border border-stone-200 dark:border-white/10 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-amber-100 text-amber-700">
+              <Clock className="h-5 w-5 sm:h-6 sm:w-6" />
+            </div>
             <div>
-              <p className="text-3xl font-display font-extrabold">{stats.pendentes}</p>
-              <p className="text-sm text-muted-foreground font-medium">Pendentes</p>
+              <p className="text-2xl sm:text-3xl font-display font-extrabold text-stone-900">{stats.pendentes}</p>
+              <p className="text-xs sm:text-sm text-stone-600 font-semibold">Pendentes</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Volunteer list */}
-      <Card className="shadow-card border-border/50">
-        <CardHeader className="pb-4">
+      {/* Volunteer list container */}
+      <Card className="bg-white/70 backdrop-blur-md border border-stone-200 dark:border-white/10 rounded-3xl shadow-xl overflow-hidden">
+        <CardHeader className="pb-4 border-b border-stone-200/60">
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-              <CardTitle className="font-display text-xl">Lista de Voluntários</CardTitle>
-              <div className="relative flex-1 max-w-sm ml-auto">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <CardTitle className="font-display text-xl font-extrabold text-stone-900">Lista de Voluntários</CardTitle>
+              </div>
+              <div className="relative w-full sm:w-80">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-500" />
                 <Input
-                  placeholder="Buscar por nome ou telefone..."
+                  placeholder="Buscar por nome..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 h-11 font-medium bg-white/80 border-stone-300 rounded-full text-stone-900 placeholder:text-stone-500 focus:bg-white"
                 />
               </div>
             </div>
-            <div className="flex gap-2">
-              <Button size="sm" variant={statusFilter === 'todos' ? 'default' : 'outline'} onClick={() => setStatusFilter('todos')}>
+
+            {/* Filter buttons */}
+            <div className="flex flex-wrap gap-2">
+              <Button 
+                size="sm" 
+                variant={statusFilter === 'todos' ? 'default' : 'outline'} 
+                onClick={() => setStatusFilter('todos')}
+                className={`font-bold rounded-full text-xs ${statusFilter === 'todos' ? 'bg-orange-600 hover:bg-orange-700 text-white' : 'bg-white/60 border-stone-300 text-stone-800'}`}
+              >
                 Todos ({stats.total})
               </Button>
-              <Button size="sm" variant={statusFilter === 'pendente' ? 'default' : 'outline'} onClick={() => setStatusFilter('pendente')}>
+              <Button 
+                size="sm" 
+                variant={statusFilter === 'pendente' ? 'default' : 'outline'} 
+                onClick={() => setStatusFilter('pendente')}
+                className={`font-bold rounded-full text-xs ${statusFilter === 'pendente' ? 'bg-orange-600 hover:bg-orange-700 text-white' : 'bg-white/60 border-stone-300 text-stone-800'}`}
+              >
                 Pendentes ({stats.pendentes})
               </Button>
-              <Button size="sm" variant={statusFilter === 'resgatado' ? 'default' : 'outline'} onClick={() => setStatusFilter('resgatado')}>
+              <Button 
+                size="sm" 
+                variant={statusFilter === 'resgatado' ? 'default' : 'outline'} 
+                onClick={() => setStatusFilter('resgatado')}
+                className={`font-bold rounded-full text-xs ${statusFilter === 'resgatado' ? 'bg-orange-600 hover:bg-orange-700 text-white' : 'bg-white/60 border-stone-300 text-stone-800'}`}
+              >
                 Resgatados ({stats.resgatados})
               </Button>
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+
+        <CardContent className="pt-6">
           {paginated.length === 0 ? (
             <div className="text-center py-12">
-              <Users className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground font-medium">
+              <Users className="h-12 w-12 text-stone-400 mx-auto mb-3" />
+              <p className="text-stone-600 font-semibold">
                 {volunteers?.length === 0 ? 'Nenhum voluntário importado ainda' : 'Nenhum resultado encontrado'}
               </p>
             </div>
           ) : (
             <>
-              <div className="overflow-x-auto">
+              {/* MOBILE VIEW: Cards empilhados perfeitamente responsivos (sm:hidden) */}
+              <div className="grid grid-cols-1 gap-3 sm:hidden">
+                {paginated.map((vol) => {
+                  const redemption = redemptionMap.get(vol.id);
+                  const hasRedeemed = !!redemption;
+                  const initials = vol.nome
+                    .split(' ')
+                    .filter(Boolean)
+                    .map((n) => n[0])
+                    .join('')
+                    .toUpperCase()
+                    .slice(0, 2);
+
+                  return (
+                    <div 
+                      key={vol.id}
+                      className="p-4 rounded-2xl border border-stone-200 bg-white/90 shadow-sm flex flex-col gap-3"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-10 h-10 rounded-full bg-orange-100 text-orange-800 font-display font-bold text-xs flex items-center justify-center shrink-0 border border-orange-200">
+                            {initials}
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="font-bold text-stone-900 text-sm truncate">
+                              {vol.nome}
+                            </h4>
+                            {hasRedeemed && (
+                              <p className="text-[11px] text-stone-600 font-medium truncate">
+                                Conf: <strong className="text-stone-900">{conferenceMap.get(redemption!.conference_id) || '—'}</strong>
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold shrink-0 ${hasRedeemed ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                          {hasRedeemed ? <CheckCircle2 className="h-3 w-3 text-emerald-600" /> : <Clock className="h-3 w-3 text-amber-600" />}
+                          {hasRedeemed ? 'Resgatado' : 'Pendente'}
+                        </span>
+                      </div>
+
+                      {/* Action buttons line for mobile card */}
+                      <div className="flex items-center justify-end gap-2 pt-2 border-t border-stone-100">
+                        {!hasRedeemed ? (
+                          <Button 
+                            size="sm" 
+                            className="bg-orange-600 hover:bg-orange-700 text-white font-bold h-9 px-4 rounded-xl gap-1.5 text-xs shadow-sm w-full"
+                            onClick={() => { setRedeemVolunteer({ id: vol.id, nome: vol.nome }); setSelectedConference(''); }}
+                          >
+                            <Ticket className="h-3.5 w-3.5" />
+                            Resgatar Ingressos
+                          </Button>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            {isAdmin && (
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                className="text-stone-700 border-stone-300 font-bold text-xs h-9 rounded-xl gap-1" 
+                                onClick={() => { setUndoTarget({ id: vol.id, nome: vol.nome }); setUndoJustificativa(''); }}
+                              >
+                                <Undo2 className="h-3.5 w-3.5" />
+                                Desfazer
+                              </Button>
+                            )}
+                            {isAdmin && (
+                              <Button 
+                                size="sm" 
+                                variant="ghost" 
+                                className="text-rose-600 hover:bg-rose-50 h-9 w-9 p-0 rounded-xl" 
+                                onClick={() => { setRemoveTarget({ id: vol.id, nome: vol.nome }); setRemoveMotivo(''); }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* DESKTOP VIEW: Tabela Limpa (hidden sm:block) */}
+              <div className="hidden sm:block overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead>Nome</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Conferência</TableHead>
-                      <TableHead className="text-right">Ações</TableHead>
+                    <TableRow className="border-stone-200">
+                      <TableHead className="font-bold text-stone-900">Nome</TableHead>
+                      <TableHead className="font-bold text-stone-900">Status</TableHead>
+                      <TableHead className="font-bold text-stone-900">Conferência</TableHead>
+                      <TableHead className="text-right font-bold text-stone-900">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -463,32 +584,47 @@ export default function Volunteers() {
                       const redemption = redemptionMap.get(vol.id);
                       const hasRedeemed = !!redemption;
                       return (
-                        <TableRow key={vol.id}>
-                          <TableCell className="font-medium">{vol.nome}</TableCell>
+                        <TableRow key={vol.id} className="border-stone-200/60 hover:bg-stone-50/50">
+                          <TableCell className="font-bold text-stone-900">{vol.nome}</TableCell>
                           <TableCell>
-                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${hasRedeemed ? 'bg-success/10 text-success' : 'bg-pending/10 text-pending'}`}>
-                              {hasRedeemed ? <CheckCircle2 className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
+                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${hasRedeemed ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                              {hasRedeemed ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" /> : <Clock className="h-3.5 w-3.5 text-amber-600" />}
                               {hasRedeemed ? 'Resgatado' : 'Pendente'}
                             </span>
                           </TableCell>
-                          <TableCell className="text-sm">
+                          <TableCell className="text-sm font-semibold text-stone-700">
                             {hasRedeemed ? conferenceMap.get(redemption!.conference_id) || '—' : '—'}
                           </TableCell>
                           <TableCell className="text-right">
-                            <div className="flex gap-1 justify-end">
+                            <div className="flex gap-1.5 justify-end">
                               {!hasRedeemed ? (
-                                <Button size="sm" className="gap-1" onClick={() => { setRedeemVolunteer({ id: vol.id, nome: vol.nome }); setSelectedConference(''); }}>
+                                <Button 
+                                  size="sm" 
+                                  className="bg-orange-600 hover:bg-orange-700 text-white font-bold h-9 px-4 rounded-xl gap-1.5 text-xs shadow-sm" 
+                                  onClick={() => { setRedeemVolunteer({ id: vol.id, nome: vol.nome }); setSelectedConference(''); }}
+                                >
                                   <Ticket className="h-3.5 w-3.5" />
-                                  <span className="hidden sm:inline">Resgatar</span>
+                                  Resgatar
                                 </Button>
                               ) : isAdmin ? (
-                                <Button size="sm" variant="ghost" className="text-muted-foreground" onClick={() => { setUndoTarget({ id: vol.id, nome: vol.nome }); setUndoJustificativa(''); }}>
+                                <Button 
+                                  size="sm" 
+                                  variant="outline" 
+                                  className="text-stone-700 border-stone-300 font-bold text-xs h-9 rounded-xl gap-1" 
+                                  onClick={() => { setUndoTarget({ id: vol.id, nome: vol.nome }); setUndoJustificativa(''); }}
+                                >
                                   <Undo2 className="h-3.5 w-3.5" />
+                                  Desfazer
                                 </Button>
                               ) : null}
                               {isAdmin && (
-                                <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" onClick={() => { setRemoveTarget({ id: vol.id, nome: vol.nome }); setRemoveMotivo(''); }}>
-                                  <Trash2 className="h-3.5 w-3.5" />
+                                <Button 
+                                  size="sm" 
+                                  variant="ghost" 
+                                  className="text-rose-600 hover:bg-rose-50 h-9 w-9 p-0 rounded-xl" 
+                                  onClick={() => { setRemoveTarget({ id: vol.id, nome: vol.nome }); setRemoveMotivo(''); }}
+                                >
+                                  <Trash2 className="h-4 w-4" />
                                 </Button>
                               )}
                             </div>
@@ -499,14 +635,31 @@ export default function Volunteers() {
                   </TableBody>
                 </Table>
               </div>
+
               {totalPages > 1 && (
-                <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/50">
-                  <p className="text-sm text-muted-foreground">
+                <div className="flex items-center justify-between mt-4 pt-4 border-t border-stone-200">
+                  <p className="text-xs sm:text-sm text-stone-600 font-semibold">
                     {(currentPage - 1) * perPage + 1}–{Math.min(currentPage * perPage, filtered.length)} de {filtered.length}
                   </p>
                   <div className="flex gap-2">
-                    <Button size="sm" variant="outline" onClick={() => setCurrentPage(p => p - 1)} disabled={currentPage === 1}>Anterior</Button>
-                    <Button size="sm" variant="outline" onClick={() => setCurrentPage(p => p + 1)} disabled={currentPage === totalPages}>Próximo</Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => setCurrentPage(p => p - 1)} 
+                      disabled={currentPage === 1}
+                      className="font-bold text-xs rounded-xl bg-white border-stone-300 text-stone-800"
+                    >
+                      Anterior
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => setCurrentPage(p => p + 1)} 
+                      disabled={currentPage === totalPages}
+                      className="font-bold text-xs rounded-xl bg-white border-stone-300 text-stone-800"
+                    >
+                      Próximo
+                    </Button>
                   </div>
                 </div>
               )}
