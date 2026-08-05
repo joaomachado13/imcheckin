@@ -6,7 +6,33 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Logo } from '@/components/Logo';
 import { toast } from 'sonner';
-import { Loader2, LogIn, Mail, Lock, Eye, EyeOff, ShieldCheck, Ticket } from 'lucide-react';
+import {
+  Loader2,
+  LogIn,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Activity,
+  Users2,
+  BarChart3,
+  QrCode,
+  Ticket,
+} from 'lucide-react';
+import loginImage from '@/assets/login-checkin.jpg.asset.json';
+
+const highlights = [
+  { icon: Activity, label: 'Controle em tempo real' },
+  { icon: Users2, label: 'Gestão por ministérios' },
+  { icon: BarChart3, label: 'Relatórios completos' },
+  { icon: QrCode, label: 'Check-in rápido e seguro' },
+];
+
+const stats = [
+  { value: '+15.000', label: 'Ingressos Gerenciados' },
+  { value: '+5.000', label: 'Check-ins Realizados' },
+  { value: '+30', label: 'Eventos Cadastrados' },
+];
 
 export default function Login() {
   const { user, loading, approvalStatus, signIn } = useAuth();
@@ -32,7 +58,7 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.email.trim() || !formData.password) {
       toast.error('Preencha todos os campos');
       return;
@@ -56,108 +82,151 @@ export default function Login() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-transparent gap-4">
         <Logo size="lg" className="animate-pulse" />
-        <div className="h-10 w-10 rounded-full border-4 border-orange-200 border-t-orange-600 animate-spin" />
+        <div className="h-10 w-10 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
-      {/* Central Login Card inspired by high-end Nagad / SaaS layout */}
-      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-white/60 grid grid-cols-1 md:grid-cols-12 min-h-[540px]">
-        
-        {/* Left Side: Vibrant Orange Brand Banner */}
-        <div className="md:col-span-5 bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500 p-8 sm:p-10 text-white flex flex-col justify-between relative overflow-hidden">
-          {/* Subtle decorative atmosphere circles */}
-          <div className="absolute -top-16 -left-16 w-48 h-48 bg-white/10 rounded-full blur-xl pointer-events-none" />
-          <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-black/10 rounded-full blur-2xl pointer-events-none" />
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-10">
+      <main className="w-full max-w-6xl rounded-[28px] overflow-hidden border border-white/60 bg-card shadow-2xl grid grid-cols-1 lg:grid-cols-12 min-h-[620px] animate-fade-in">
+        {/* ============ Painel esquerdo: imagem real + overlay ============ */}
+        <section className="relative lg:col-span-6 xl:col-span-7 min-h-[320px] flex flex-col justify-between p-8 sm:p-10 lg:p-12 overflow-hidden">
+          <img
+            src={loginImage.url}
+            alt="Equipe do im.CHECK-IN recepcionando participantes em um evento"
+            className="absolute inset-0 h-full w-full object-cover"
+            loading="eager"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(135deg, rgba(255,102,0,0.85), rgba(255,140,0,0.65))',
+            }}
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(17,17,17,0.55),transparent_60%)]" />
 
-          {/* Top Brand Logo */}
-          <div className="relative z-10 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40 shadow-inner">
-              <Ticket className="w-5 h-5 text-white" />
+          {/* marca */}
+          <div className="relative z-10 flex items-center gap-3 animate-fade-in">
+            <div className="h-11 w-11 rounded-2xl bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center">
+              <Ticket className="h-5 w-5 text-primary-foreground" aria-hidden="true" />
             </div>
-            <span className="font-display font-black text-2xl text-white tracking-tight">
-              im.<span className="text-amber-200 font-extrabold">CHECK-IN</span>
+            <span className="font-display text-2xl font-extrabold tracking-tight text-primary-foreground">
+              im.<span className="font-black">CHECK-IN</span>
             </span>
           </div>
 
-          {/* Center Message */}
-          <div className="relative z-10 my-8 space-y-4">
-            <h2 className="font-display text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight">
-              Bem-vindo ao im.CHECK-IN
-            </h2>
-            <p className="text-orange-100 text-sm font-medium leading-relaxed">
-              Sua plataforma completa para gestão inteligente de ingressos, check-in e resgates em tempo real com agilidade profissional.
+          {/* headline */}
+          <div className="relative z-10 my-10 space-y-6 animate-slide-up">
+            <h1 className="font-display text-3xl sm:text-4xl xl:text-5xl font-extrabold leading-[1.05] tracking-tight text-primary-foreground max-w-xl">
+              GESTÃO INTELIGENTE DE EVENTOS
+            </h1>
+            <p className="text-primary-foreground/90 text-sm sm:text-base font-medium leading-relaxed max-w-md">
+              Controle ingressos, resgates e check-ins em tempo real com uma plataforma
+              simples, rápida e eficiente.
             </p>
+
+            <ul className="grid sm:grid-cols-2 gap-2.5 max-w-lg">
+              {highlights.map(({ icon: Icon, label }) => (
+                <li
+                  key={label}
+                  className="flex items-center gap-2.5 rounded-xl border border-white/25 bg-white/15 backdrop-blur-md px-3.5 py-2.5 text-primary-foreground transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white/25"
+                >
+                  <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <span className="text-xs sm:text-sm font-semibold">{label}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Bottom Trust Badge */}
-          <div className="relative z-10 flex items-center gap-2 text-xs font-semibold text-orange-100 pt-4 border-t border-white/20">
-            <ShieldCheck className="w-4 h-4 text-amber-200" />
-            <span>Sistema Seguro & Integrado</span>
+          {/* estatísticas */}
+          <div className="relative z-10 grid grid-cols-3 gap-3 animate-slide-up">
+            {stats.map((s) => (
+              <div
+                key={s.label}
+                className="rounded-2xl border border-white/30 bg-white/15 backdrop-blur-xl px-3 py-4 text-primary-foreground transition-all duration-200 hover:-translate-y-1 hover:bg-white/25"
+              >
+                <p className="font-display text-xl sm:text-2xl font-extrabold tracking-tight">
+                  {s.value}
+                </p>
+                <p className="text-[11px] sm:text-xs font-semibold text-primary-foreground/85 leading-snug mt-1">
+                  {s.label}
+                </p>
+              </div>
+            ))}
           </div>
-        </div>
+        </section>
 
-        {/* Right Side: Clean Professional Form */}
-        <div className="md:col-span-7 p-8 sm:p-10 bg-white text-stone-900 flex flex-col justify-center">
-          <div className="max-w-sm mx-auto w-full space-y-6">
-            
-            <div className="space-y-1 text-left">
-              <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
-                Entrar na Conta
-              </h1>
-              <p className="text-sm text-stone-600 font-semibold">
-                Preencha seus dados para acessar o painel de eventos.
+        {/* ============ Painel direito: formulário ============ */}
+        <section className="lg:col-span-6 xl:col-span-5 p-8 sm:p-10 lg:p-12 bg-card flex flex-col justify-center">
+          <div className="max-w-sm mx-auto w-full space-y-8">
+            <div className="space-y-2">
+              <h2 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+                Entrar na conta
+              </h2>
+              <p className="text-sm text-muted-foreground font-medium">
+                Acesse o painel de gestão de eventos.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-              <div className="space-y-1.5">
-                <Label htmlFor="email" className="flex items-center gap-1.5 font-bold text-xs text-stone-900">
-                  <Mail className="h-3.5 w-3.5 text-orange-600" />
-                  Email corporativo ou pessoal
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-xs font-bold text-foreground">
+                  E-mail
                 </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seu.email@exemplo.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  disabled={isSubmitting}
-                  required
-                  className="h-11 text-sm font-semibold bg-stone-50 border-stone-300 text-stone-900 rounded-xl focus:bg-white focus:border-orange-500"
-                />
+                <div className="relative">
+                  <Mail
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                  <Input
+                    id="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="seu.email@exemplo.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    disabled={isSubmitting}
+                    required
+                    className="h-12 pl-10 text-sm font-medium bg-secondary/60 border-border rounded-xl transition-all focus-visible:bg-card focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:border-primary"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password" className="flex items-center gap-1.5 font-bold text-xs text-stone-900">
-                    <Lock className="h-3.5 w-3.5 text-orange-600" />
-                    Senha de acesso
+                  <Label htmlFor="password" className="text-xs font-bold text-foreground">
+                    Senha
                   </Label>
-                  <Link 
-                    to="/forgot-password" 
-                    className="text-xs text-orange-600 hover:text-orange-700 font-bold hover:underline"
+                  <Link
+                    to="/forgot-password"
+                    className="text-xs text-primary hover:underline font-bold rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                   >
                     Esqueci minha senha
                   </Link>
                 </div>
                 <div className="relative">
+                  <Lock
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+                    aria-hidden="true"
+                  />
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
                     placeholder="••••••••"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     disabled={isSubmitting}
                     required
-                    className="h-11 text-sm font-semibold bg-stone-50 border-stone-300 text-stone-900 rounded-xl focus:bg-white focus:border-orange-500 pr-10"
+                    className="h-12 pl-10 pr-11 text-sm font-medium bg-secondary/60 border-border rounded-xl transition-all focus-visible:bg-card focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:border-primary"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 p-1"
+                    aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -167,7 +236,7 @@ export default function Login() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full bg-orange-600 hover:bg-orange-700 text-white h-12 text-sm font-bold rounded-xl shadow-lg hover:shadow-xl transition-all gap-2 mt-2"
+                className="btn-premium w-full h-12 rounded-xl text-sm font-bold gap-2"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -178,25 +247,26 @@ export default function Login() {
                 ) : (
                   <>
                     <LogIn className="h-4 w-4" />
-                    Entrar no Sistema
+                    Entrar no sistema
                   </>
                 )}
               </Button>
             </form>
 
-            <div className="pt-4 text-center border-t border-stone-200">
-              <p className="text-xs text-stone-600 font-semibold">
+            <div className="pt-5 border-t border-border text-center">
+              <p className="text-xs text-muted-foreground font-semibold">
                 Ainda não possui uma conta?{' '}
-                <Link to="/signup" className="text-orange-600 hover:text-orange-700 font-extrabold hover:underline">
+                <Link
+                  to="/signup"
+                  className="text-primary hover:underline font-extrabold rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                >
                   Cadastrar agora
                 </Link>
               </p>
             </div>
-
           </div>
-        </div>
-
-      </div>
+        </section>
+      </main>
     </div>
   );
 }
