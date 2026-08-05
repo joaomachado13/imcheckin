@@ -1,14 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* im. CHECK-IN - Premium Design System
-   Bold orange identity with modern, premium aesthetic
+   Bold orange identity with modern, liquid glass aesthetic
 */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap');
-
-@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
 @layer base {
   :root {
