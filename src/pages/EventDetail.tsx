@@ -88,7 +88,20 @@ export default function EventDetail() {
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [csvData, setCsvData] = useState('');
   const [sheetUrl, setSheetUrl] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(() => {
+    return (eventId && sessionStorage.getItem(`event_search_${eventId}`)) || '';
+  });
+
+  const updateSearchTerm = (val: string) => {
+    setSearchTerm(val);
+    if (eventId) {
+      if (val) {
+        sessionStorage.setItem(`event_search_${eventId}`, val);
+      } else {
+        sessionStorage.removeItem(`event_search_${eventId}`);
+      }
+    }
+  };
 
   // Estado para Resgate Rapido ao clicar no comprador
   const [selectedBuyerForRedeem, setSelectedBuyerForRedeem] = useState<Buyer | null>(null);
@@ -907,9 +920,19 @@ export default function EventDetail() {
                 <Input
                   placeholder="Buscar por nome ou telefone..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 h-11 font-medium bg-white/60 border-white/80 rounded-full text-stone-900 placeholder:text-stone-500 focus:bg-white"
+                  onChange={(e) => updateSearchTerm(e.target.value)}
+                  className="pl-10 pr-9 h-11 font-medium bg-white/60 border-white/80 rounded-full text-stone-900 placeholder:text-stone-500 focus:bg-white"
                 />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => updateSearchTerm('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-stone-400 hover:text-stone-700 transition-colors"
+                    title="Limpar busca"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             </div>
             {/* Status Filter Buttons */}

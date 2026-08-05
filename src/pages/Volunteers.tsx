@@ -48,7 +48,18 @@ export default function Volunteers() {
   const deleteConference = useDeleteConference();
   const deleteAllVolunteers = useDeleteAllVolunteers();
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(() => {
+    return sessionStorage.getItem('volunteer_search') || '';
+  });
+
+  const updateSearchTerm = (val: string) => {
+    setSearchTerm(val);
+    if (val) {
+      sessionStorage.setItem('volunteer_search', val);
+    } else {
+      sessionStorage.removeItem('volunteer_search');
+    }
+  };
   const [statusFilter, setStatusFilter] = useState<'todos' | 'pendente' | 'resgatado'>('todos');
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [csvData, setCsvData] = useState('');
@@ -439,9 +450,19 @@ export default function Volunteers() {
                 <Input
                   placeholder="Buscar por nome..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 h-11 font-medium bg-white/80 border-stone-300 rounded-full text-stone-900 placeholder:text-stone-500 focus:bg-white"
+                  onChange={(e) => updateSearchTerm(e.target.value)}
+                  className="pl-10 pr-9 h-11 font-medium bg-white/80 border-stone-300 rounded-full text-stone-900 placeholder:text-stone-500 focus:bg-white"
                 />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => updateSearchTerm('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-stone-400 hover:text-stone-700 transition-colors"
+                    title="Limpar busca"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             </div>
 
