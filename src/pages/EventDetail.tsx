@@ -422,9 +422,9 @@ export default function EventDetail() {
     return filteredBuyers.filter(b => b.status === 'resgatado');
   }, [filteredBuyers, statusFilter]);
 
-  // Pagination state
+  // Pagination state (20 itens por página para leveza e rapidez em qualquer PC)
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 50;
+  const itemsPerPage = 20;
   
   // Reset to page 1 when search changes
   const paginatedBuyers = useMemo(() => {
