@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { Ticket } from 'lucide-react';
 
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
@@ -7,10 +8,11 @@ interface LogoProps {
 }
 
 const sizeConfig = {
-  sm: { icon: 'text-xl', text: 'text-sm' },
-  md: { icon: 'text-2xl', text: 'text-base' },
-  lg: { icon: 'text-4xl', text: 'text-xl' },
+  sm: { icon: 'text-xl', text: 'text-sm', mark: 'h-4 w-4' },
+  md: { icon: 'text-2xl', text: 'text-base', mark: 'h-5 w-5' },
+  lg: { icon: 'text-4xl', text: 'text-xl', mark: 'h-7 w-7' },
 };
+
 
 export function Logo({ size = 'md', showText = true, className }: LogoProps) {
   const config = sizeConfig[size];
