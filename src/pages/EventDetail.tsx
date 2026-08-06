@@ -59,6 +59,8 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import * as XLSX from 'xlsx';
 import { normalizeSearchText } from '@/lib/search/normalize';
+import { useSearchBackGuard } from '@/hooks/useSearchBackGuard';
+
 import { analyzeImportDuplicates, type DuplicateAnalysis } from '@/lib/import/duplicates';
 import { ImportDuplicatesPreview } from '@/components/ImportDuplicatesPreview';
 import { parseMinistries } from '@/lib/import/ministries';
