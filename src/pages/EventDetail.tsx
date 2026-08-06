@@ -493,38 +493,96 @@ export default function EventDetail() {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Hero Header with optional background */}
-      <div className="relative -mx-4 -mt-8 px-4 pt-8 pb-8 overflow-hidden">
-        {/* Background image layer - more visible */}
+      <div
+        className={cn(
+          'relative -mx-4 -mt-8 px-4 sm:px-6 overflow-hidden flex flex-col justify-end',
+          event.background_url
+            ? 'min-h-[240px] sm:min-h-[280px] pt-10 pb-7 rounded-b-3xl'
+            : 'pt-8 pb-8'
+        )}
+      >
+        {/* Background image layer + brand overlay */}
         {event.background_url && (
           <>
-            <div 
+            <div
               className="absolute inset-0 bg-cover bg-center"
               style={{ backgroundImage: `url(${event.background_url})` }}
+              aria-hidden="true"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/90" />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'linear-gradient(135deg, hsl(20 30% 8% / 0.88), hsl(25 95% 30% / 0.62))',
+              }}
+              aria-hidden="true"
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'linear-gradient(to top, hsl(20 30% 6% / 0.92), transparent 70%)',
+              }}
+              aria-hidden="true"
+            />
           </>
         )}
-        
+
         <div className="relative z-10 flex flex-col gap-4">
-          <Link to="/dashboard" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors w-fit font-medium">
+          <Link
+            to="/dashboard"
+            className={cn(
+              'inline-flex items-center gap-2 transition-colors w-fit font-semibold text-sm rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50',
+              event.background_url
+                ? 'text-primary-foreground/80 hover:text-primary-foreground'
+                : 'text-muted-foreground hover:text-primary'
+            )}
+          >
             <ArrowLeft className="h-4 w-4" />
             Voltar aos Eventos
           </Link>
 
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <h1 className="font-display text-display-sm gradient-text">{event.name}</h1>
+              <h1
+                className={cn(
+                  'font-display text-display-sm',
+                  event.background_url
+                    ? 'text-primary-foreground drop-shadow-sm'
+                    : 'gradient-text'
+                )}
+              >
+                {event.name}
+              </h1>
               {event.event_date && (
                 <div className="flex items-center gap-2 mt-2">
-                  <div className="p-1.5 rounded-lg bg-primary/10">
-                    <Clock className="h-4 w-4 text-primary" />
+                  <div
+                    className={cn(
+                      'p-1.5 rounded-lg',
+                      event.background_url ? 'bg-white/15 backdrop-blur-md' : 'bg-primary/10'
+                    )}
+                  >
+                    <Clock
+                      className={cn(
+                        'h-4 w-4',
+                        event.background_url ? 'text-primary-foreground' : 'text-primary'
+                      )}
+                    />
                   </div>
-                  <p className="text-muted-foreground font-medium">
+                  <p
+                    className={cn(
+                      'font-medium',
+                      event.background_url
+                        ? 'text-primary-foreground/90'
+                        : 'text-muted-foreground'
+                    )}
+                  >
                     {format(new Date(event.event_date), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
                   </p>
                 </div>
               )}
             </div>
+
 
           {isAdmin && (
             <div className="flex gap-2">
