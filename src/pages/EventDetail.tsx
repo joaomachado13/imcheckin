@@ -1004,10 +1004,11 @@ export default function EventDetail() {
                           </h4>
                           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-700 mt-0.5 font-semibold">
                             {buyer.contato ? (
-                              <span className="flex items-center gap-1 text-stone-900 font-bold">
-                                📞 {buyer.contato}
+                              <span className="text-stone-900 font-bold">
+                                {buyer.contato}
                               </span>
                             ) : (
+
                               <span className="text-stone-500">Sem telefone</span>
                             )}
                             <span>•</span>
