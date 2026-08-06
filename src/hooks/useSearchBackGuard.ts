@@ -37,15 +37,4 @@ export function useSearchBackGuard(active: boolean, onClear: () => void) {
       window.history.back();
     }
   }, [active]);
-
-  // Remove a entrada extra ao desmontar (saida por link/botao interno)
-  useEffect(() => {
-    return () => {
-      if (pushedRef.current) {
-        pushedRef.current = false;
-        skipNextRef.current = true;
-        window.history.back();
-      }
-    };
-  }, []);
 }
