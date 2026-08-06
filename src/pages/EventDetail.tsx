@@ -59,6 +59,8 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import * as XLSX from 'xlsx';
 import { normalizeSearchText } from '@/lib/search/normalize';
+import { useSearchBackGuard } from '@/hooks/useSearchBackGuard';
+
 import { analyzeImportDuplicates, type DuplicateAnalysis } from '@/lib/import/duplicates';
 import { ImportDuplicatesPreview } from '@/components/ImportDuplicatesPreview';
 import { parseMinistries } from '@/lib/import/ministries';
@@ -103,6 +105,13 @@ export default function EventDetail() {
       }
     }
   };
+
+  // 1o "voltar" com busca ativa limpa a busca; o 2o sai da tela do evento
+  useSearchBackGuard(searchTerm.trim().length > 0, () => {
+    updateSearchTerm('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
 
   // Estado para Resgate Rapido ao clicar no comprador
   const [selectedBuyerForRedeem, setSelectedBuyerForRedeem] = useState<Buyer | null>(null);
