@@ -104,6 +104,13 @@ export default function EventDetail() {
     }
   };
 
+  // 1o "voltar" com busca ativa limpa a busca; o 2o sai da tela do evento
+  useSearchBackGuard(searchTerm.trim().length > 0, () => {
+    updateSearchTerm('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+
   // Estado para Resgate Rapido ao clicar no comprador
   const [selectedBuyerForRedeem, setSelectedBuyerForRedeem] = useState<Buyer | null>(null);
   const [isQuickRedeemOpen, setIsQuickRedeemOpen] = useState(false);
