@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
