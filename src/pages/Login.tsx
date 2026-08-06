@@ -28,11 +28,7 @@ const highlights = [
   { icon: QrCode, label: 'Check-in rápido e seguro' },
 ];
 
-const stats = [
-  { value: '+15.000', label: 'Ingressos Gerenciados' },
-  { value: '+5.000', label: 'Check-ins Realizados' },
-  { value: '+30', label: 'Eventos Cadastrados' },
-];
+
 
 export default function Login() {
   const { user, loading, approvalStatus, signIn } = useAuth();
