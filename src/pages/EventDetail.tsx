@@ -491,6 +491,12 @@ export default function EventDetail() {
     );
   }
 
+  const heroBtn = cn(
+    'gap-2',
+    event.background_url &&
+      'border-white/40 bg-white/15 text-primary-foreground backdrop-blur-md hover:bg-white/25 hover:text-primary-foreground'
+  );
+
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Hero Header with optional background */}
@@ -589,7 +595,7 @@ export default function EventDetail() {
             <div className="flex gap-2">
               <Dialog open={isImportOpen} onOpenChange={setIsImportOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="gap-2">
+                  <Button variant="outline" className={heroBtn}>
                     <Upload className="h-4 w-4" />
                     Importar
                   </Button>
@@ -737,7 +743,7 @@ export default function EventDetail() {
                 </Button>
               )}
 
-              <Button variant="outline" onClick={handleExportClick} className="gap-2 font-semibold" disabled={!buyers?.length}>
+              <Button variant="outline" onClick={handleExportClick} className={cn(heroBtn, 'font-semibold')} disabled={!buyers?.length}>
                 <Download className="h-4 w-4" />
                 Exportar
               </Button>
