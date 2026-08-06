@@ -298,10 +298,11 @@ function ListaNaoCadastrados({
             <div className="flex-1 min-w-0 space-y-1">
               <p className="font-semibold text-sm truncate">{b.nome}</p>
               {b.contato && (
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Phone className="h-3 w-3" /> {b.contato}
+                <p className="text-xs text-muted-foreground">
+                  {b.contato}
                 </p>
               )}
+
               {b.ministerios && b.ministerios.length > 0 && (
                 <div className="flex flex-wrap gap-1 pt-0.5">
                   {b.ministerios.map((m) => (
