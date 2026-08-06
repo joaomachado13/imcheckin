@@ -118,44 +118,34 @@ export default function Login() {
           </div>
 
           {/* headline */}
-          <div className="relative z-10 my-10 space-y-6 animate-slide-up">
-            <h1 className="font-display text-3xl sm:text-4xl xl:text-5xl font-extrabold leading-[1.05] tracking-tight text-primary-foreground max-w-xl">
-              GESTÃO INTELIGENTE DE EVENTOS
-            </h1>
-            <p className="text-primary-foreground/90 text-sm sm:text-base font-medium leading-relaxed max-w-md">
-              Controle ingressos, resgates e check-ins em tempo real com uma plataforma
-              simples, rápida e eficiente.
-            </p>
+          <div className="relative z-10 my-10 space-y-8 animate-slide-up">
+            <div className="space-y-5">
+              <h1 className="font-display text-3xl sm:text-4xl xl:text-5xl font-extrabold leading-[1.05] tracking-tight text-primary-foreground max-w-xl">
+                GESTÃO INTELIGENTE DE EVENTOS
+              </h1>
+              <p className="text-primary-foreground/90 text-sm sm:text-base font-medium leading-relaxed max-w-md">
+                Controle ingressos, resgates e check-ins em tempo real com uma plataforma
+                simples, rápida e eficiente.
+              </p>
+            </div>
 
-            <ul className="grid sm:grid-cols-2 gap-2.5 max-w-lg">
+            <ul className="grid sm:grid-cols-2 gap-3 max-w-lg">
               {highlights.map(({ icon: Icon, label }) => (
                 <li
                   key={label}
-                  className="flex items-center gap-2.5 rounded-xl border border-white/25 bg-white/15 backdrop-blur-md px-3.5 py-2.5 text-primary-foreground transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white/25"
+                  className="flex items-center gap-3 rounded-2xl border border-white/25 bg-white/15 backdrop-blur-md px-4 py-4 text-primary-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/25"
                 >
-                  <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-                  <span className="text-xs sm:text-sm font-semibold">{label}</span>
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/20 border border-white/30">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                  <span className="text-sm font-semibold leading-snug">{label}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* estatísticas */}
-          <div className="relative z-10 grid grid-cols-3 gap-3 animate-slide-up">
-            {stats.map((s) => (
-              <div
-                key={s.label}
-                className="rounded-2xl border border-white/30 bg-white/15 backdrop-blur-xl px-3 py-4 text-primary-foreground transition-all duration-200 hover:-translate-y-1 hover:bg-white/25"
-              >
-                <p className="font-display text-xl sm:text-2xl font-extrabold tracking-tight">
-                  {s.value}
-                </p>
-                <p className="text-[11px] sm:text-xs font-semibold text-primary-foreground/85 leading-snug mt-1">
-                  {s.label}
-                </p>
-              </div>
-            ))}
-          </div>
+          <div aria-hidden="true" />
+
         </section>
 
         {/* ============ Painel direito: formulário ============ */}
